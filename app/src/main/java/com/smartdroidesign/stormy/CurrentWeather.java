@@ -17,6 +17,23 @@ public class CurrentWeather {
     private double humidity;
     private double precipChance;
 
+    // Used in MainActivity (getCurrentDetails())
+    public CurrentWeather() {
+    }
+
+    // Will be used when binding the data as it possesses all of the objects attributes
+    public CurrentWeather(String locationLabel, String icon, String summary, String timezone,
+                          long time, double temperature, double humidity, double precipChance) {
+        this.locationLabel = locationLabel;
+        this.icon = icon;
+        this.summary = summary;
+        this.timezone = timezone;
+        this.time = time;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.precipChance = precipChance;
+    }
+
     public String getLocationLabel() {
         return locationLabel;
     }

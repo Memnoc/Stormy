@@ -6,4 +6,6 @@
     <string name="network_unavailable_message">Sorry, no network is unavailable</string>
     <string name="error_network">Network error!</string>
     <string name="error_network_unavailable">Looks like your network is not available</string>
+    <string name="temperature_degree_value">100</string>
+    <string name="dark_sky_message"><a href="https://darksky.net/poweredby">Powered by DarkSky</a></string>
 </resources>
