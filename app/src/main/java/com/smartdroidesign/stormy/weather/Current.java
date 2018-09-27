@@ -1,10 +1,12 @@
-package com.smartdroidesign.stormy;
+package com.smartdroidesign.stormy.weather;
+
+import com.smartdroidesign.stormy.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class CurrentWeather {
+public class Current {
 
     private String locationLabel;
     private String icon;
@@ -18,12 +20,12 @@ public class CurrentWeather {
     private double precipChance;
 
     // Used in MainActivity (getCurrentDetails())
-    public CurrentWeather() {
+    public Current() {
     }
 
     // Will be used when binding the data as it possesses all of the objects attributes
-    public CurrentWeather(String locationLabel, String icon, String summary, String timezone,
-                          long time, double temperature, double humidity, double precipChance) {
+    public Current(String locationLabel, String icon, String summary, String timezone,
+                   long time, double temperature, double humidity, double precipChance) {
         this.locationLabel = locationLabel;
         this.icon = icon;
         this.summary = summary;

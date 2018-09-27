@@ -1,4 +1,4 @@
-package com.smartdroidesign.stormy;
+package com.smartdroidesign.stormy.ui;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -14,6 +14,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.smartdroidesign.stormy.NetworkAlertDialogFragment;
+import com.smartdroidesign.stormy.R;
+import com.smartdroidesign.stormy.weather.Current;
+import com.smartdroidesign.stormy.weather.Forecast;
 import com.smartdroidesign.stormy.databinding.ActivityMainBinding;
 
 import org.json.JSONException;
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private CurrentWeather currentWeather;
+    private Forecast forecast;
 
     private ImageView iconImageView;
 
@@ -57,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         String apiKey = "82b36425b0116d78b9b2889a50dcc459";
 
 
-        String foreCastURL = "https://api.darksky.net/forecast/"
+        final String foreCastURL = "https://api.darksky.net/forecast/"
                 + apiKey + "/" + latitude + "," + longitude;
 
         if (isNetworkAvailable()) {
@@ -83,16 +87,18 @@ public class MainActivity extends AppCompatActivity {
                         }
                         Log.v(TAG, jsonData);
                         if (response.isSuccessful()) {
-                            currentWeather = getCurrentDetails(jsonData);
-                            final CurrentWeather displayWeather = new CurrentWeather(
-                                    currentWeather.getLocationLabel(),
-                                    currentWeather.getIcon(),
-                                    currentWeather.getSummary(),
-                                    currentWeather.getTimezone(),
-                                    currentWeather.getTime(),
-                                    currentWeather.getTemperature(),
-                                    currentWeather.getHumidity(),
-                                    currentWeather.getPrecipChance()
+                            forecast = parseForecastData(jsonData);
+
+                            Current current = forecast.getCurrent();
+                            final Current displayWeather = new Current(
+                                    current.getLocationLabel(),
+                                    current.getIcon(),
+                                    current.getSummary(),
+                                    current.getTimezone(),
+                                    current.getTime(),
+                                    current.getTemperature(),
+                                    current.getHumidity(),
+                                    current.getPrecipChance()
                             );
 
                             binding.setWeather(displayWeather);
@@ -122,30 +128,38 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private Forecast parseForecastData(String jsonData) throws JSONException {
+        Forecast forecast = new Forecast();
 
-    public CurrentWeather getCurrentDetails(String jsonData) throws JSONException {
+        forecast.setCurrent(getCurrentDetails(jsonData));
+
+        return forecast;
+    }
+
+
+    private Current getCurrentDetails(String jsonData) throws JSONException {
         JSONObject forecast = new JSONObject(jsonData);
 
         String timezone = forecast.getString("timezone");
         JSONObject currently = forecast.getJSONObject("currently");
 
-        CurrentWeather currentWeather = new CurrentWeather();
+        Current current = new Current();
 
 
-        currentWeather.setHumidity(currently.getDouble("humidity"));
-        currentWeather.setTime(currently.getLong("time"));
-        currentWeather.setIcon(currently.getString("icon"));
-        currentWeather.setLocationLabel("Alcatraz Island, CA");
-        currentWeather.setPrecipChance(currently.getDouble("precipProbability"));
-        currentWeather.setSummary(currently.getString("summary"));
-        currentWeather.setTemperature(currently.getDouble("temperature"));
-        currentWeather.setTimeZone(timezone);
+        current.setHumidity(currently.getDouble("humidity"));
+        current.setTime(currently.getLong("time"));
+        current.setIcon(currently.getString("icon"));
+        current.setLocationLabel("Alcatraz Island, CA");
+        current.setPrecipChance(currently.getDouble("precipProbability"));
+        current.setSummary(currently.getString("summary"));
+        current.setTemperature(currently.getDouble("temperature"));
+        current.setTimeZone(timezone);
 
-        Log.d(TAG, currentWeather.getFormattedTime());
+        Log.d(TAG, current.getFormattedTime());
 
 
 //        Log.i(TAG, "from JSON: " + timezone + currently);
-        return currentWeather;
+        return current;
     }
 
     private boolean isNetworkAvailable() {

@@ -1,4 +1,4 @@
-package com.smartdroidesign.stormy;
+package com.smartdroidesign.stormy.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatDialogFragment;
+
+import com.smartdroidesign.stormy.R;
 
 public class AlertDialogFragment extends AppCompatDialogFragment {
     @NonNull
